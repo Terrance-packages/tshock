@@ -1,30 +1,29 @@
 pkgbase = tshock
-	pkgdesc = A Terraria Server administration modification that runs on the open source TerrariaAPI.
-	pkgver = 4.3.26
+	pkgdesc = Terraria Server administration modification that runs on the open source TerrariaAPI.
+	pkgver = 6.1.0
 	pkgrel = 1
 	epoch = 1
-	url = http://tshock.co/xf
+	url = https://github.com/Pryaxis/TShock
 	install = tshock.install
-	arch = any
-	license = GPL3
-	makedepends = nuget
-	depends = mono
+	arch = x86_64
+	license = GPL-3.0-or-later
+	makedepends = dotnet-sdk-9.0
+	depends = dotnet-runtime-9.0
 	depends = tmux
 	provides = tshock
 	conflicts = tshock
 	backup = etc/conf.d/tshock/default.conf
-	source = tshock::git+https://github.com/Pryaxis/TShock.git#tag=v4.3.26
+	source = tshock::git+https://github.com/Pryaxis/TShock.git#tag=v6.1.0
 	source = tshock.sh
 	source = default.conf
 	source = service
 	source = tmpfiles
 	source = sysusers
-	sha512sums = SKIP
-	sha512sums = f0958448b53ff9851c47876b89f1cef6d3e33ce1b8cbe13167c685ed1c9d89a8bf0f01929d47200e4f0f964c3e7796a2d9ca558e5d9f1269db3f2e4537a6c97a
-	sha512sums = d530a528ba84d57dfcb360e03ec62b1b38da6fa2383bef8cdb0cd039ba6466b053dd99a130a858c86405c8957ba86a0a080f2f56089843a7055662fa41cee102
+	sha512sums = 1a3d5a128c6e697bfd3fdd7d04a0d07098facb0b9ee0802cc58768674553ba885ce33a6eadb770997bff9ed7e78ab7cef8214d9ae8b332ef6039478d18fa0594
+	sha512sums = ad9f588d76e19b5ac2576163390d5e923568a83bea302a1bdfd2e68481521317248d28f33492e0a187390c9aba10ce547f5aed3066c3bf78e9b6c21f0a506154
+	sha512sums = 27153a4649414ce78284fa12deb1bae3fa06b9732d56e81b522186f098c3fc0f51f262700b0177bbe946a8edb2f1d23b0a027e44b61c953b2d2b0db25f21c88f
 	sha512sums = 7c1788f21664f038c32da6c0cbe817404a83f81b7b8be07bb0483d5ffd35991a07b647b18d7aa316db369edd4e7eab21c1b81ab3b45aa2c3692c6c63673a3fdb
 	sha512sums = a04b458932bb3882b9d40f9b5a9074b681e60cb3284635d1efb7e54293f39df334e7ae526dabf50f633ecdde980f287a939d3ea6eb0d4098663fbda21af70a65
 	sha512sums = 5752f8453fbb4d973ebe71bba371ae7b0ddd2313ccd17de89b3942d024e295805324085640756e7118e4cc76abee675f5e253526261cb62cb76b0bc155aca317
 
 pkgname = tshock
-
