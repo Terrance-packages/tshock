@@ -1,18 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 CONFDIR='/etc/conf.d/tshock'
 
-if [ -n "$2" ]; then
-    INSTANCE=$2
-else
-    INSTANCE=default
-fi
-
+INSTANCE="${2:-default}"
 if [ -r ${CONFDIR}/${INSTANCE}.conf ]; then
-    source ${CONFDIR}/${INSTANCE}.conf
-else
-    echo "TShock could not be started because ${CONFDIR}/${INSTANCE}.conf could not be read."
-    exit 1
+    . ${CONFDIR}/${INSTANCE}.conf
 fi
 
 TMUX_CONSOLE=tshock-console-${INSTANCE}
@@ -57,36 +49,38 @@ TMUX_CONSOLE=tshock-console-${INSTANCE}
 case "$1" in
     start)
         if tmux has-session -t ${TMUX_CONSOLE} &> /dev/null ; then
-            echo "This TShock instance is already running"
+            echo "TShock instance '$INSTANCE' is already running"
             exit 1
-        else
-            tmux new-session -d -s ${TMUX_CONSOLE} -d "cd ${BASEDIR}; mono --server --gc=sgen -O=all TerrariaServer.exe -port ${PORT} -worldpath ${WORLDDIR} -world ${WORLDDIR}/${WORLD}.wld -autocreate ${SIZE}"
-            if [ $? -gt 0 ]; then
-                echo "Could not start instance"
-                exit 1
-            fi
+        fi
+        tmux new-session -d -s ${TMUX_CONSOLE} -c /var/lib/tshock \
+            /opt/tshock/TShock.Server \
+                -port "${PORT:-7777}" \
+                -worldpath "${WORLDDIR:=.local/share/Terraria/Worlds}" \
+                -world "${WORLDDIR}/${WORLD:-$INSTANCE}.wld" \
+                -autocreate "${SIZE:-2}"
+        if [ $? -gt 0 ]; then
+            echo "Could not start instance"
+            exit 1
         fi
         ;;
 
     stop)
-        if tmux has-session -t ${TMUX_CONSOLE} &> /dev/null ; then
-            tmux send-keys -t ${TMUX_CONSOLE} 'broadcast NOTICE: Server shutting down in 5 seconds!' C-m
-            sleep 5
-            tmux send-keys -t ${TMUX_CONSOLE} 'exit' C-m
-            sleep 10
-        else
-            echo "This TShock instance is not running"
+        if ! tmux has-session -t ${TMUX_CONSOLE} &> /dev/null ; then
+            echo "TShock instance '$INSTANCE' is not running"
             exit 1
         fi
+        tmux send-keys -t ${TMUX_CONSOLE} 'broadcast NOTICE: Server shutting down in 5 seconds!' C-m
+        echo 'Server shutting down in 5 seconds'
+        sleep 5
+        tmux send-keys -t ${TMUX_CONSOLE} 'exit' C-m
         ;;
 
     console)
-        if tmux has-session -t ${TMUX_CONSOLE} &> /dev/null ; then
-            tmux attach -t ${TMUX_CONSOLE}
-        else
-            echo "This TShock instance is not running"
+        if ! tmux has-session -t ${TMUX_CONSOLE} &> /dev/null ; then
+            echo "TShock instance '$INSTANCE' is not running"
             exit 1
         fi
+        tmux attach -t ${TMUX_CONSOLE}
         ;;
 
     *)
