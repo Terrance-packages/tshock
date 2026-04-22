@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+HOME='/var/lib/tshock'
 CONFDIR='/etc/conf.d/tshock'
 
 INSTANCE="${2:-default}"
@@ -52,11 +53,11 @@ case "$1" in
             echo "TShock instance '$INSTANCE' is already running"
             exit 1
         fi
-        tmux new-session -d -s ${TMUX_CONSOLE} -c /var/lib/tshock \
+        mkdir -p "${BASEDIR:=$HOME/servers/$INSTANCE}"
+        tmux new-session -d -s ${TMUX_CONSOLE} -c "${BASEDIR}" \
             /opt/tshock/TShock.Server \
                 -port "${PORT:-7777}" \
-                -worldpath "${WORLDDIR:=.local/share/Terraria/Worlds}" \
-                -world "${WORLDDIR}/${WORLD:-$INSTANCE}.wld" \
+                -world "${WORLDDIR:=$HOME/.local/share/Terraria/Worlds}/${WORLD:-$INSTANCE}.wld" \
                 -autocreate "${SIZE:-2}"
         if [ $? -gt 0 ]; then
             echo "Could not start instance"
