@@ -17,11 +17,11 @@ provides=($_pkgname)
 conflicts=($_pkgname)
 install="${pkgname}.install"
 source=("${_pkgname}::git+https://github.com/Pryaxis/TShock.git#tag=v${pkgver}"
-        "tshock.sh"
-        "default.conf"
-        "service"
-        "tmpfiles"
-        "sysusers")
+        "${_pkgname}.sh"
+        'default.conf'
+        "${_pkgname}.service"
+        "${_pkgname}.tmpfiles"
+        "${_pkgname}.sysusers")
 sha512sums=('1a3d5a128c6e697bfd3fdd7d04a0d07098facb0b9ee0802cc58768674553ba885ce33a6eadb770997bff9ed7e78ab7cef8214d9ae8b332ef6039478d18fa0594'
             '52fcd941f625d4077e8f709668964589d0d21bba06e918a9589e2a06d2601ba1472220e399cd384e5e3f8fc64837d0ba68bf870272f148b57e6d840ed75ac84b'
             '1381a44cac93190bc2e5b1928cacb6bc410394def5a46086fa3bcb2dc123473974293639c15f7cbf96f2c8c90f6e0519d5f7f386ae18c885c7964309d55b230e'
@@ -43,11 +43,11 @@ build() {
 }
 
 package() {
-    install -Dm755 "${srcdir}/tshock.sh" "${pkgdir}/usr/bin/tshock"
+    install -Dm755 "${srcdir}/${_pkgname}.sh" "${pkgdir}/usr/bin/tshock"
     install -Dm644 "${srcdir}/default.conf" "${pkgdir}/etc/conf.d/${_pkgname}/default.conf"
-    install -Dm644 "${srcdir}/sysusers" "$pkgdir/usr/lib/sysusers.d/${_pkgname}.conf"
-    install -Dm644 "${srcdir}/tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/${_pkgname}.conf"
-    install -Dm644 "${srcdir}/service" "${pkgdir}/usr/lib/systemd/system/tshock@.service"
+    install -Dm644 "${srcdir}/${_pkgname}.sysusers" "$pkgdir/usr/lib/sysusers.d/${_pkgname}.conf"
+    install -Dm644 "${srcdir}/${_pkgname}.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/${_pkgname}.conf"
+    install -Dm644 "${srcdir}/${_pkgname}.service" "${pkgdir}/usr/lib/systemd/system/tshock@.service"
     mkdir -p "${pkgdir}/opt"
     cp -ar "${srcdir}/${_pkgname}/TShockLauncher/output" "${pkgdir}/opt/${_pkgname}"
 }
