@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-HOME='/var/lib/tshock'
+HOME='/var/lib/terraria'
 CONFDIR='/etc/conf.d/tshock'
 
 INSTANCE="${2:-default}"
