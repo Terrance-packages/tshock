@@ -1,5 +1,5 @@
 [Unit]
-Description=TShock Terraria server.
+Description=TShock Terraria Server: %i
 
 [Service]
 Type=forking
